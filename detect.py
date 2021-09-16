@@ -3,6 +3,11 @@ import vortex.runtime as vrt
 import numpy as np
 
 export_path = "./saved_model/blood_model.onnx"
+runtime_device = 'cpu'
+model = vrt.create_runtime_model(model_path=export_path,
+                                 runtime=runtime_device)
+
+class_names = model.class_names
 
 def normalize(img):
     mean = [0.485, 0.456, 0.406]
@@ -21,11 +26,6 @@ def Predict(file):
     img = normalize(img)
     img = np.expand_dims(img, 0)
 
-    runtime_device = 'cpu'
-    model = vrt.create_runtime_model(model_path=export_path,
-                                      runtime=runtime_device)
-
-    class_names = model.class_names
     preds = model(img)
 
     class_pred = preds[0]['class_label'][0][0].astype('int')
