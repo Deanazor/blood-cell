@@ -1,22 +1,25 @@
-from torchvision import transforms
-from PIL import Image
+import cv2
 import vortex.runtime as vrt
 import numpy as np
 
 export_path = "./saved_model/blood_model.onnx"
 
-data_transforms = transforms.Compose([
-                        transforms.Resize((128, 128)),
-                        transforms.ToTensor(),
-                        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])                                    
-                ])
+def normalize(img):
+    mean = [0.485, 0.456, 0.406]
+    std = [0.229, 0.224, 0.225]
+
+    img = np.array([(img[:,:,i] - mean[i]) / std[i] for i in range(len(mean))])
+
+    return img
 
 def Predict(file):
     response = {}
-    img = Image.open(file).convert("RGB")
 
-    img = data_transforms(img).view(-1, 3, 128, 128)
-    img = np.array(img).astype(np.float32)
+    img = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+    img = cv2.resize(img, (128,128), interpolation=cv2.INTER_CUBIC).astype(np.float32)/255
+    img = img[:,:,::-1]
+    img = normalize(img)
+    img = np.expand_dims(img, 0)
 
     runtime_device = 'cpu'
     model = vrt.create_runtime_model(model_path=export_path,
