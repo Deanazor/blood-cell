@@ -12,6 +12,8 @@ RUN cd vortex && git checkout drop-enforce && pip install --ignore-installed --t
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
+RUN apt-get install -y libglib2.0-0 libsm6 libxrender1 libxext6
+
 COPY . /app/
 
 EXPOSE 8080
