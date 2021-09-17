@@ -2,6 +2,8 @@
 
 This is a simple classification model using pytorch to detect malaria-infected blood cell
 
+**created during an internship at nodeflux**
+
 ## How to run
 
 Clone repository :
@@ -71,3 +73,10 @@ Run image :
     "status": "OK"
 }
 ```
+
+# Project Documentation
+[Overleaf](https://www.overleaf.com/read/dtrjsvyxqmpw)
+
+# Colab for training models
+
+If you want to see (or even try to create your own model) try to see this colab and see if thing works out [Colab](https://colab.research.google.com/github/Deanazor/blood-cell/blob/master/model_training.ipynb)
